@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>prediction system</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='home.css') }}">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="https://w7.pngwing.com/pngs/884/63/png-transparent-health-care-primary-care-physician-primary-healthcare-real-estate-logo-medicine-medical-care.png" width="90" height="35" class="d-inline-block align-top" alt="logo">
+            Primary Care
+          </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+          </ul>
+          <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form> -->
+        </div>
+      </nav>
+
+	<div class="container">
+		<div class="img">
+            <br>
+            <h2>Health Predictive Platform</h2>
+
+            <k>This website is a health predictive platform that uses cutting-edge technology and advanced algorithms to provide primary predictions about various health conditions. The website is designed to assist medical professionals and individuals in identifying potential health issues early on and taking necessary precautions to prevent their progression.
+              </k>
+		</div>
+		<div class="login-content">
+                <div class="row row gy-4">
+                  <div class="col">
+                    <div class="card">
+                        <div class="container2">
+                            <a href="/select">Select Symptoms</a>
+                          </div>
+                          <br>
+                        <img src="https://thumbs.dreamstime.com/b/hospital-logo-template-hospital-logo-template-117487677.jpg" alt="Avatar" style="width:110% ;height: 150%; align-content: center;padding-left: 10%;padding-right: 10%;">
+                        </div>
+                  </div>
+                  <div class="col">
+                    <div class="card">
+                        <div class="container2">
+                            <a href="/ecg">HeartAttack Prediction using Ecg</a>
+                          </div>
+                          <br>
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/000/565/396/small/07022019-15.jpg" alt="Avatar" style="width:100%; height:fit-content; align-content: center;padding-left: 10%;padding-right: 10%;">
+                        </div>
+                  </div>
+                  <div class="w-100">
+
+                  </div>
+                  <div class="col">
+                    <div class="card">
+                        <div class="container2">
+                            <a href="/select">BrainTumor</a>
+                          </div>
+                          <br>
+                        <img src="https://as2.ftcdn.net/v2/jpg/03/25/92/53/1000_F_325925336_g3kSnZM29vuLicYRbMvaAMKeTj82e7UB.jpg"alt="Avatar" style="width: 100% ;  align-content: center;padding-left: 10%;padding-right: 10%;">
+                        </div>
+                  </div>
+                  <br>
+                  <br>
+                  <div class="col">
+                    <div class="card">
+                        <div class="container2">
+                            <a href="/select">Nearest Hosiptals</a>
+                          </div>
+                          <br>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzqaPP-Dt3kJLmOr7U8f8tLgzeDgjAbMmUY0AY8ik97eX4aRgOxoCsRSFviKmt4bkoDGQ&usqp=CAU" alt="Avatar" style="width:100% ; height: fit-content; align-content: center;padding-left: 10%;padding-right: 10%;">
+                        </div>
+                  </div>
+                </div>
+               
+    </div>
+    </div>
+    <script>var BotStar={appId:"s645137b2-d6fa-48bd-a658-c716fa2ab8c0",mode:"livechat"};!function(t,a){var e=function(){(e.q=e.q||[]).push(arguments)};e.q=e.q||[],t.BotStarApi=e;!function(){var t=a.createElement("script");t.type="text/javascript",t.async=1,t.src="https://widget.botstar.com/static/js/widget.js";var e=a.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}();}(window,document)</script>
+    <script type="text/javascript" src="static/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ECG Upload Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+</head>
+<style>
+   body {
+			background-image: url("https://media.withings.com/email/temporary/201901/ces/ecg.gif");
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="https://w7.pngwing.com/pngs/884/63/png-transparent-health-care-primary-care-physician-primary-healthcare-real-estate-logo-medicine-medical-care.png" width="90" height="35" class="d-inline-block align-top" alt="logo">
+            Primary Care
+          </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <div class="container">
+        <div class="row mt-5">
+            {% if mi==0 %}
+            <div class="col-md-6 mx-auto">
+                <div class="card border-0">
+                    <div class="card-header bg-white">
+                        <h4 class="text-center">Upload Digital ECG Files</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/upload" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="datFile" class="form-label">Upload .dat file:</label>
+                                <input class="form-control" type="file" id="dat_file" name="dat_file">
+                            </div>
+                            <div class="mb-3">
+                                <label for="heaFile" class="form-label">Upload .hea file:</label>
+                                <input class="form-control" type="file" id="hea_file" name="hea_file">
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary btn-block" type="submit">Predict</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+            <div class="col-md-6 mx-auto">
+                <div class="card border-0">
+                    <div class="card-header bg-white">
+                        <h4 class="text-center">Your Results are Here!</h4>
+                    </div>
+                    <div class="card-body">
+                    {% if i==8 %}
+                    <p>
+                        "ECG analysis results: Normal"
+                        "Based on our analysis, the ECG appears to be normal"
+                        "The ECG waveform shows no abnormalities"
+                        "No signs of myocardial infarction detected"
+                        "ECG findings suggest no immediate concern for heart health"
+                    </p>
+                    {% else %}
+                    <p>
+                        "ECG analysis results: Myocardial Infarction detected"
+                        "Based on our analysis, the ECG suggests a myocardial infarction"
+                        "The ECG waveform shows abnormalities consistent with myocardial infarction"
+                        "Signs of myocardial infarction detected"
+                        "Urgent medical attention required"
+                    </p>
+                    {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- <div class="mb-3 text-center">
+            <img src="https://media.withings.com/email/temporary/201901/ces/ecg.gif" alt="ECG Animation">
+        </div> -->
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
