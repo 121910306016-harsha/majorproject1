@@ -7,6 +7,7 @@ from collections import Counter
 from pandas import DataFrame, read_csv;
 import sklearn  
 from flask import Flask, render_template, request, redirect, url_for   
+import requests
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -170,6 +171,7 @@ def Logistic(s1,s2,s3,s4,s5):
         result="Not Found"
     print(result)
     return result
+
 disease=['Fungal infection','Allergy','GERD','Chronic cholestasis','Drug Reaction',
 'Peptic ulcer diseae','AIDS','Diabetes','Gastroenteritis','Bronchial Asthma','Hypertension',
 ' Migraine','Cervical spondylosis',
@@ -228,7 +230,7 @@ tr.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic chol
 X_test= tr[symtoms]
 y_test = tr[["prognosis"]]
 np.ravel(y_test)
-@app.route("/")               
+@app.route("/", methods=['GET'])               
 def main(): 
     return render_template("home.html")
 @app.route("/select")
@@ -276,27 +278,33 @@ def filter_ecg(val):
     xn_filtered_HF = signal.filtfilt(b_high, a_high, ecg)
     xn = (ecg-xn_filtered_HF-xn_filtered_LF)
     return xn
-def return_features(ecg_test):
-    cleaned = nk.ecg_clean(ecg_test, sampling_rate = 500)  
-    rdet, = biosppy.ecg.hamilton_segmenter(signal = cleaned, sampling_rate = 500)   
-    rdet, = biosppy.ecg.correct_rpeaks(signal = cleaned, rpeaks = rdet, sampling_rate = 500, tol = 0.05)
-    if(rdet.size<=4):       
+def features(ecg_test):
+    cleaned = nk.ecg_clean(ecg_test, sampling_rate=500)
+    rdet, = biosppy.ecg.hamilton_segmenter(signal=cleaned, sampling_rate=500)
+    rdet, = biosppy.ecg.correct_rpeaks(signal=cleaned, rpeaks=rdet, sampling_rate=500, tol=0.05)
+    
+    if rdet.size <= 4:
         return 'INCOMPLETE'
-    rdet = np.delete(rdet, -1)       
+    
+    rdet = np.delete(rdet, -1)
     rdet = np.delete(rdet, 0)
-    rpeaks = {'ECG_R_Peaks': rdet}   
+    rpeaks = {'ECG_R_Peaks': rdet}
     cleaned_base = nk.signal_detrend(cleaned, order=0)
-    signals, waves = nk.ecg_delineate(cleaned_base, rpeaks, sampling_rate = 500, method = "dwt") 
-    rpeakss = rpeaks.copy() 
-    temppo = 4-len(rpeakss['ECG_R_Peaks'])
-    if temppo>0:
+    signals, waves = nk.ecg_delineate(cleaned_base, rpeaks, sampling_rate=500, method="dwt")
+    rpeakss = rpeaks.copy()
+    temppo = 4 - len(rpeakss['ECG_R_Peaks'])
+    if temppo > 0:
         for i in range(temppo):
             rpeakss['ECG_R_Peaks'] = np.append(rpeakss['ECG_R_Peaks'], rpeakss['ECG_R_Peaks'][-1] + 1)
-    signals1, waves1 = nk.ecg_delineate(cleaned_base, rpeakss, sampling_rate = 500, method = "peak")
-    if temppo>0:
+
+    signals1, waves1 = nk.ecg_delineate(cleaned_base, rpeakss, sampling_rate=500, method="peak")
+
+    if temppo > 0:
         for j in range(temppo):
-            waves1['ECG_Q_Peaks'] = waves1['ECG_Q_Peaks'][:-1] 
-    return (cleaned_base, [waves['ECG_T_Peaks'], waves['ECG_R_Onsets'], waves['ECG_R_Offsets'], waves1['ECG_Q_Peaks']])
+            waves1['ECG_Q_Peaks'] = waves1['ECG_Q_Peaks'][:-1]
+            
+    return cleaned_base, [waves['ECG_T_Peaks'], waves['ECG_R_Onsets'], waves['ECG_R_Offsets'], waves1['ECG_Q_Peaks']]
+
 def result_array(given_list):
     final_list_X=[]
     mini = 50; 
@@ -332,9 +340,9 @@ def read_data(head):
         val_ind = val_ind.reshape(1, tmpp)
         val_filtered = filter_ecg(val_ind)
         val_filtered = val_filtered.reshape(val_filtered.shape[1], ) 
-        a_var = return_features(val_filtered)
+        a_var = features(val_filtered)
         if(a_var == 'INCOMPLETE'):
-            temp_list = []
+            temp_list = []    
             flag1 = 1
             break
         temp_list.append(a_var)
@@ -350,8 +358,21 @@ def predict_mi(head):
     feature_list=read_data(head)
     pred=np.argmax(model.predict(feature_list), axis = -1)
     print(pred)
+    mi_types = {
+    "ALMI": "Anterior wall myocardial infarction caused by blockage of the left anterior descending artery",
+    "AMI": "Acute myocardial infarction, a general term used to describe any type of heart attack",
+    "ASMI": "Anteroseptal myocardial infarction caused by blockage of the left anterior descending artery near the septum",
+    "ILMI": "Inferior wall myocardial infarction caused by blockage of the right coronary artery",
+    "IMI": "Inferior myocardial infarction affecting the bottom of the heart, usually caused by a blockage in the right coronary artery",
+    "IPLMI": "Inferior-posterior-lateral myocardial infarction affecting the bottom, back, and side walls of the heart, caused by blockage in the right coronary or left circumflex artery",
+    "IPMI": "Inferior-posterior myocardial infarction affecting the bottom and back walls of the heart, caused by blockage in the right coronary artery",
+    "LMI": "Lateral wall myocardial infarction affecting the side wall of the heart, caused by blockage in the left circumflex artery",
+    "NORM": "No evidence of myocardial infarction",
+    "PMI": "Possible myocardial infarction requiring further tests to confirm the diagnosis"
+}
     mi=1
-    i=pred[0]
+    i=np.bincount(pred).argmax()
+    print(i)   
     if(i==0):
         temp = 'ALMI'
     elif(i==1):
@@ -372,7 +393,8 @@ def predict_mi(head):
         temp = 'NORM'
     else:
         temp = 'PMI'
-    return i,mi,temp
+    des=mi_types[temp]
+    return i,mi,temp,des
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLD ='C:/Users/chint/OneDrive/Desktop/sample/Projectversion1/uploaded'
 ALLOWED_EXTENSIONS = {'dat', 'hea'}
@@ -388,23 +410,8 @@ def upload_file():
         print(2)
         dat_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(dat_file.filename)))
         hea_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(hea_file.filename)))
-        i,mi,temp=predict_mi(head)
-    # return redirect(url_for('/predict', head=head))
-    # return render_template("ecgupload.html",mi=mi)
-    # if request.method == 'POST':
-    #     if 'file' not in request.files:
-    #         return redirect(request.url)
-    #     file = request.files['file']
-    #     print(2,file.filename)
-    #     if file.filename == '':
-    #         return redirect(request.url)
-    #     if file:
-    #         filename = file.filename
-    #       
-    #         print(2,head)
-    #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
-    #         predict_mi(head)
-    return render_template("ecgupload.html",res=i,mi=mi,local=temp,i=i)
-    
+        i,mi,temp,des=predict_mi(head)
+    return render_template("ecgupload.html",res=i,mi=mi,local=temp,i=i,des=des) 
+   
 if __name__ == "__main__":        
     app.run(debug=True)                 
